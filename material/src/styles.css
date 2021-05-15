@@ -1,0 +1,10 @@
+/* You can add global styles to this file, and also import other style files */
+
+@font-face {
+    font-family: TTC;
+    src: url('../../../../YatishKelkar/yatish/src/assets/fonts/TTCommons-Medium.ttf');
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: TTC, Tahoma, Geneva, Verdana, sans-serif, "Helvetica Neue", sans-serif; }
+

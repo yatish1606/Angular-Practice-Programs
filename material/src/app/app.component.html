@@ -1,0 +1,9 @@
+<button mat-flat-button color="primary">Hello world</button>
+<mat-button-toggle #toggleBtn disableRipple>toggle</mat-button-toggle>
+{{toggleBtn.checked}}
+
+<mat-button-toggle-group #toggleGroup>
+  <mat-button-toggle value="angular" disableRipple>angular</mat-button-toggle>
+  <mat-button-toggle value="react" disableRipple>react</mat-button-toggle>
+  <mat-button-toggle value="vue" disableRipple>vue</mat-button-toggle>
+</mat-button-toggle-group>
