@@ -1,0 +1,16 @@
+<p>{{title}}</p>
+<p>hello world</p>
+<!-- 
+<app-test 
+    [parentMessage]="title" 
+    (childEvent)="title=$event"
+></app-test> -->
+
+<a routerLink="path1" routerLinkActive='active'>path 1</a>
+<a routerLink="path2" routerLinkActive='active'>path2</a>
+
+
+<ul *ngFor="let route of routes">
+    <li><a (click)="onClick(route)">{{route.title}}</a></li>
+</ul>
+<router-outlet></router-outlet>

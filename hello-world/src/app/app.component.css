@@ -1,0 +1,35 @@
+
+
+@font-face {
+    font-family: TTCommons;
+    src: url('../../../../YatishKelkar/yatish/src/assets/fonts/TTCommons-Medium.ttf');
+}
+
+@font-face {
+    font-family: Euclid;
+    src: url('../../../../YatishKelkar/yatish/src/assets/fonts/EuclidCircularA-Medium.ttf');
+}
+
+* {
+    font-family: TTCommons, 'Courier New', Courier, monospace;
+    letter-spacing: 0.8px;
+    color: #545454;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+p {
+    padding: 10px 0;
+    margin: 0;
+    transition: 0.3s ease-out;
+}
+
+p:hover {
+    background-color: aliceblue;
+    transition: 0.3s ease-out;
+}
+
+.active {
+    color: blue;
+    font-size: 20px;
+}

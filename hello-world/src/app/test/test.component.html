@@ -1,0 +1,25 @@
+<p>test works! {{name}}</p>
+<p>{{greetUser()}}</p>
+<p>{{window.location.href}}</p>
+<input #refVar [(ngModel)]="text" type="text" [disabled]="isDisabled">
+<p [ngClass]="classObj" [style.color]="isokay ? 'orange' :  'pink'">class binding</p>
+<button (click)="onClick(refVar)">click</button>
+
+
+<div *ngIf="isDisabled; then disabled; else notDisabled"></div>
+<ng-template #disabled><p>disabled</p></ng-template>
+<ng-template #notDisabled><p>not disabled</p></ng-template>
+
+<p>{{parentData}}</p>
+
+<div>
+    <ul *ngFor="let emp of employees.slice(0,5)">
+        <li>
+            <p>{{emp.id}}  {{emp.title}}</p>
+        </li>
+    </ul>
+</div>
+
+<p>You selected route with id {{id}}</p>
+
+<app-icon [color]="color" [iconSize]="iconSize" (iconClickEvent)="onIconClick($event)"></app-icon>

@@ -1,0 +1,11 @@
+#icon {
+    cursor: pointer;
+    transition: 0.3s ease-out;
+    border-radius: 100%;
+    padding: 5px;
+}
+
+#icon:hover {
+    background-color: #EEE;
+    transition: 0.3s ease-out;
+}
