@@ -1,3 +1,8 @@
+<nav>
+  <a routerLink="/dashboard">Dashboard</a>
+  <a routerLink="/heroes">Heroes</a>
+  <a routerLink="/embed">Embed</a>
+</nav>
 <h2>Top Heroes</h2>
 <div class="heroes-menu">
     <a *ngFor="let hero of heroes"
@@ -5,3 +10,5 @@
     {{hero.name}}
   </a>
 </div>
+<app-hero-search></app-hero-search>
+<app-messages></app-messages>
