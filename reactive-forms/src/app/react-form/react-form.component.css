@@ -1,0 +1,47 @@
+* {
+    font-family: sans-serif;
+}
+
+#address-form {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    height: 35px;
+    background-color: rgb(240, 248, 255);
+    border-radius: 5px;
+    transition: 0.3s ease-out;
+    padding: 3px 10px;
+    outline: none;
+    border: 3px solid transparent;
+    margin: 5px 10px;
+    font-size: 18px;
+    color: #434343;
+}
+input:focus {
+    border: 3px solid rgb(209, 234, 255);
+    transition: 0.3s ease-out;
+}
+
+button {
+    padding: 8px 16px;
+    border-radius: 5px;
+    background-color: teal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    text-transform: capitalize;
+    font-family: sans-serif;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s ease-out;
+    margin: 5px 10px;
+}
+button:hover {
+    filter: brightness(0.8);
+    transition: 00.3s ease-out;
+}
