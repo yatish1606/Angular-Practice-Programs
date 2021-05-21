@@ -4,6 +4,7 @@ import { DropdownQuestion } from './question-dropdown';
 import { QuestionBase } from './question-base';
 import { TextboxQuestion } from './question-textbox';
 import { of } from 'rxjs';
+import { CheckBoxQuestion } from './question-checkbox';
 
 @Injectable()
 export class QuestionService {
@@ -37,6 +38,18 @@ export class QuestionService {
         label: 'Email',
         type: 'email',
         order: 2
+      }),
+
+      new CheckBoxQuestion({
+        key: 'Languages',
+        label: 'Languages',
+        type: 'checkbox',
+        options: [
+          {key: '0', value: 'English'},
+          {key: '1', value: 'Hindi'},
+          {key: '2', value: 'Marathi'},
+        ],
+        order: 4
       })
     ];
 

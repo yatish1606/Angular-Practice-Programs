@@ -11,4 +11,12 @@ export class DynamicFormQuestionComponent {
   @Input() question!: QuestionBase<string>;
   @Input() form!: FormGroup;
   get isValid() { return this.form.controls[this.question.key].valid; }
+
+  public checkBoxChange (event : Event, opt: any ) : void {
+    let old = this.form.value.Languages
+    let input = document.getElementById(`checkbox${opt.key}`) as HTMLInputElement
+    this.form.patchValue({
+      Languages: input.checked ?  old.concat(opt.value) : old.replace(opt.value, '')
+    })
+  }
 }
