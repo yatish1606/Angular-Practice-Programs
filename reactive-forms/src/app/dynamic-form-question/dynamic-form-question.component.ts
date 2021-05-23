@@ -12,11 +12,16 @@ export class DynamicFormQuestionComponent {
   @Input() form!: FormGroup;
   get isValid() { return this.form.controls[this.question.key].valid; }
 
+  ngOnInit () {
+    console.log(this.question)
+  }
+
   public checkBoxChange (event : Event, opt: any ) : void {
     let old = this.form.value.Languages
     let input = document.getElementById(`checkbox${opt.key}`) as HTMLInputElement
     this.form.patchValue({
-      Languages: input.checked ?  old.concat(opt.value) : old.replace(opt.value, '')
+      Languages: input.checked ?  old.concat(' ').concat(opt.value) : old.replace(opt.value, '')
     })
   }
+
 }

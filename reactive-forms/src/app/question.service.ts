@@ -5,6 +5,7 @@ import { QuestionBase } from './question-base';
 import { TextboxQuestion } from './question-textbox';
 import { of } from 'rxjs';
 import { CheckBoxQuestion } from './question-checkbox';
+import { RadioQuestion } from './question-radio';
 
 @Injectable()
 export class QuestionService {
@@ -50,6 +51,18 @@ export class QuestionService {
           {key: '2', value: 'Marathi'},
         ],
         order: 4
+      }),
+
+      new RadioQuestion({
+        key: 'Country',
+        label: 'Country',
+        type: 'radio',
+        options: [
+          {key: '0', value: 'USA'},
+          {key: '1', value: 'Britain'},
+          {key: '2', value: 'India'},
+        ],
+        order: 5
       })
     ];
 

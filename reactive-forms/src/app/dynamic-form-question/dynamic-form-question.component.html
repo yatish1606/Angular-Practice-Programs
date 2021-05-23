@@ -5,7 +5,7 @@
     <div [ngSwitch]="question.controlType">
   
       <input *ngSwitchCase="'textbox'" [formControlName]="question.key"
-              [id]="question.key" [type]="question.type">
+              [id]="question.key" [type]="question.type ? question.type : 'text'">
   
       <select [id]="question.key" *ngSwitchCase="'dropdown'" [formControlName]="question.key">
         <option *ngFor="let opt of question.options" [value]="opt.key">{{opt.value}}</option>
@@ -16,6 +16,12 @@
           <input type="checkbox" [value]="opt.key" (change)="checkBoxChange($event, opt)" [id]="'checkbox' + opt.key">{{opt.value}}
         </div>
       </fieldset>
+
+      <div [id]="question.key" *ngSwitchCase="'radio'">
+        <div *ngFor="let opt of question.options" >
+          <input type="radio" [formControlName]="question.key" [value]="opt.value">{{opt.value}}        
+        </div>
+      </div>
   
     </div>
 
