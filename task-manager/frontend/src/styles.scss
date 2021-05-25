@@ -1,0 +1,88 @@
+/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@font-face {
+    font-family: TTCommonsMedium;
+    src: url('./assets/fonts/TTCommons-Medium.ttf');
+}
+@font-face {
+    font-family: TTCommonsSemibold;
+    src: url('./assets/fonts/TTCommons-DemiBold.ttf');
+}
+@font-face {
+    font-family: TTCommonsBold;
+    src: url('./assets/fonts/TTCommons-Bold.ttf');
+}
+
+$turquiose : #44ddd0;
+$green : #27d7a1;
+$light-green : #45f693;
+$dark-green : rgb(0,100,80);
+$light : #f8f8f8;
+$grey : #686868;
+$tan : #53555e;
+$primary : $green;
+$link : $light-green;
+
+* {
+    font-family: TTCommonsMedium, Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+html {
+    background: linear-gradient(to right top, $turquiose, $green);
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.primary {
+    color: $primary;
+}
+
+.title {
+    font-size: 23px;
+    font-family: TTCommonsSemibold;
+    color: $primary;
+    line-height: 28px;
+    letter-spacing: 1px;
+    margin: 0;
+    padding: 0;
+}
+
+.title-caps {
+    font-size: 17px;
+    font-family: TTCommonsMedium;
+    color: $primary;
+    line-height: 20px;
+    letter-spacing: 1.5px;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.primary-button {
+    height: 36px;
+    background-color: $green;
+    color: white;
+    font-size: 16px;
+    line-height: 16px;
+    font-family: TTCommonsSemiBold;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    padding: 10px 16px 6px 16px;
+    outline: none;
+    border: none;
+    margin: 0;
+    cursor: pointer;
+    transition: transform 0.35s ease-out;
+
+    &:active {
+        transform: scale(0.97);
+    }
+
+}
