@@ -17,7 +17,8 @@ export class TaskViewComponent implements OnInit {
   }
 
   public createNewList = (title: string) => {
-    this.taskService.createList(title)
+    this.taskService
+    .createList(title)
     .subscribe((response : any) => console.log(response))
   }
 
