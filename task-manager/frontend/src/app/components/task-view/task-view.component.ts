@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
+import { TaskService } from 'src/app/task.service';
 
 @Component({
   selector: 'app-task-view',
@@ -8,9 +9,14 @@ import {MatIconModule} from '@angular/material/icon';
 })
 export class TaskViewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private taskService : TaskService) { }
 
   ngOnInit(): void {
+  }
+
+  public createNewList = () => {
+    this.taskService.createList("Sampple titel")
+    .subscribe((response : any) => console.log(response))
   }
 
 }

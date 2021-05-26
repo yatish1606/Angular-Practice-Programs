@@ -7,6 +7,11 @@ const { mongoose } = require('./db/mongoose')
 const { Task } = require('./db/models/Task.model')
 app.use(bodyParser.json())
 
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+    next()
+})
 
 // Get requests
 app.get('/lists', (req, res) => { 
