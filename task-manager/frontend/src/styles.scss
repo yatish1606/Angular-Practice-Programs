@@ -61,15 +61,25 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     margin-bottom: 20px;
 }
 
+.heading {
+    font-size: 22px !important;
+    font-family: TTCommonsMedium !important;
+    color: $tan;
+    line-height: 24px;
+    letter-spacing: 0.5px;
+    margin: 0;
+    padding: 0;
+}
+
 .primary-button {
-    height: 36px;
+    height: 40px;
     background-color: $green;
     color: white;
-    font-size: 16px;
+    font-size: 17.5px;
     line-height: 16px;
     font-family: TTCommonsSemiBold;
     letter-spacing: 0.4px;
-    text-transform: uppercase;
+    // text-transform: uppercase;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -85,4 +95,54 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
         transform: scale(0.97);
     }
 
+}
+
+.secondary-button {
+    height: 40px;
+    background-color: $light;
+    color: $tan;
+    font-size: 16px;
+    line-height: 12px;
+    font-family: TTCommonsSemiBold;
+    letter-spacing: 0.4px;
+    // text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    padding: 10px 16px 6px 16px;
+    outline: none;
+    border: none;
+    margin: 0;
+    cursor: pointer;
+    transition: transform 0.35s ease-out;
+
+    &:active {
+        transform: scale(0.97);
+    }
+
+}
+
+input {
+    height: 42px;
+    border-radius: 5px;
+    padding: 8px 12px;
+    padding-top: 10px;
+    background-color: $light;
+    display: flex;
+    border: 2.5px solid transparent;
+    outline: none;
+    user-select: none;
+    transition: 0.3s ease-out;
+    font-size: 18px;
+    color: $tan;
+    width: 100%;
+
+    &:focus {
+        border-color: $green;
+    }
+}
+
+.mat-dialog-container {
+    border-radius: 5px;
 }
