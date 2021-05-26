@@ -8,13 +8,13 @@ const { Task } = require('./db/models/Task.model')
 app.use(bodyParser.json())
 
 
+// Get requests
 app.get('/lists', (req, res) => { 
     List
     .find({})
     .then(completeList => res.status(200).send(completeList))
     .catch(e => res.status(404).send(e))
 })
-
 
 app.get('/lists/:listID/tasks', (req, res) => {
     Task
@@ -25,7 +25,19 @@ app.get('/lists/:listID/tasks', (req, res) => {
     .catch(e => res.status(404).send(e))
 })
 
+app.get('/lists/:listID/tasks/:taskID', (req, res) => {
+    const { listID, taskID } = req.params
+    Task
+    .find({
+        _id: taskID, 
+        _listID: listID
+    })
+    .then(tasks => res.send(tasks))
+    .catch(e => res.status(404).send(e))
+})
 
+
+// Post requests
 app.post('/lists', (req, res) => { 
     const { title } = req.body
     const newList = new List({title})
@@ -35,7 +47,6 @@ app.post('/lists', (req, res) => {
     .then(completeList =>  res.status(200).send(completeList))
     .catch(e => res.status(404).send(e))
 })
-
 
 app.post('/lists/:listID/tasks', (req, res) => {
     const newTask = new Task({
@@ -49,6 +60,7 @@ app.post('/lists/:listID/tasks', (req, res) => {
 })
 
 
+// Patch requests
 app.patch('/lists/:id', (req, res) => {
     List.findOneAndUpdate(
         {_id: req.params.id},
@@ -58,10 +70,38 @@ app.patch('/lists/:id', (req, res) => {
     .catch(e => res.status(404).send(e))
 })
 
+app.patch('/lists/:listID/tasks/:taskID', (req, res) => {
+    const { listID, taskID } = req.params
+    Task.findOneAndUpdate(
+        {
+            _id: taskID,
+            _listID: listID
+        },
+        {
+            $set: req.body   
+        }
+    )
+    .then(() => res.sendStatus(200))
+    .catch(e => res.status(404).send(e))
+})
 
+
+// Delete requests
 app.delete('/lists/:id', (req, res) => {
     List.findOneAndRemove(
         {_id: req.params.id}
+    )
+    .then(deletedDoc => res.send(deletedDoc))
+    .catch(e => res.status(400).send(e))
+})
+
+app.delete('/lists/:listID/tasks/:taskID', (req, res) => {
+    const { listID, taskID } = req.params
+    Task.findOneAndRemove(
+        {
+            _id: taskID,
+            _listID: listID
+        }
     )
     .then(deletedDoc => res.send(deletedDoc))
     .catch(e => res.status(400).send(e))
