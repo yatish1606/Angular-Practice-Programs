@@ -39,6 +39,7 @@
     flex-grow: 1;
     width: 100%;
     margin-top: 10px;
+    overflow-y: scroll;
 
     .list-menu-item {
         padding: 10px 0;
@@ -46,7 +47,7 @@
         text-decoration: none;
         transition: 0.25s ease-out;
         padding: 10px;
-        margin-left: -10px;
+        margin-right: 10px;
         border-radius: 5px;
         margin-bottom: 5px;
         p {
@@ -64,6 +65,22 @@
             background-color: #ccf8ef;
             color: $dark-green;
         }
+    }
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        padding-left: 2px;
+    }
+
+    &::-webkit-scrollbar-track {
+        padding: 0 0 0 2px;
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        height: 10vh;
+        border-radius: 5px;
+        background-color: $light;
     }
 }
 
@@ -127,5 +144,10 @@
     transition: transform 0.35s ease-out;
     &:active {
         transform: scale(0.96);
+    }
+
+    img {
+        width: 20px;
+        height: 20px;
     }
 }

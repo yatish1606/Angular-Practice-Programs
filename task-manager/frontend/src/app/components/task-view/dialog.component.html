@@ -1,10 +1,10 @@
-<h1 class="heading">Enter name of new list</h1>
+<h1 class="heading">Enter name of new {{data.type}}</h1>
 <div mat-dialog-content>
   <div mat-form-field>
-    <input autofocus [(ngModel)]="data.listTitle">
+    <input autofocus [(ngModel)]="data.type === 'list' ? data.listTitle : data.taskTitle">
   </div>
 </div>
 <div mat-dialog-actions style="display: flex; justify-content: flex-end; margin: 20px 0 0 0;padding:0;">
   <button mat-button (click)="onNoClick()" class="secondary-button" style="margin-right: 20px;">Cancel</button>
-  <button [mat-dialog-close]="data.listTitle" cdkFocusInitial class="primary-button">Create List</button>
+  <button [mat-dialog-close]="data" cdkFocusInitial class="primary-button">Create {{data.type | titlecase}}</button>
 </div>

@@ -14,4 +14,12 @@ export class TaskService {
       {title}
     )
   }
+
+  public getLists = () => {
+    return this.webRequestService.get('lists')
+  }
+
+  public getTasks = (listID: string) => {
+    return this.webRequestService.get(`lists/${listID}/tasks`)
+  }
 }

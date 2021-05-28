@@ -5,38 +5,29 @@
             <h1 class="mat-display-1 title-caps primary">Lists</h1>
 
             <div class="list-menu">
-                <a href="/" class="list-menu-item is-active">
-                    <p>List#1</p>
-                </a>
-                <a href="/" class="list-menu-item">
-                    <p>List#2</p>
-                </a>
-                <a href="/" class="list-menu-item">
-                    <p>List#3</p>
+                <a [routerLink]="['/lists', list._id]" class="list-menu-item" *ngFor="let list of lists" routerLinkActive="is-active">
+                    <p>{{list.title}}</p>
                 </a>
             </div>
 
-            <button class="primary-button" (click)="openDialog()">+ New Task</button>
+            <button class="primary-button" (click)="openDialog('list')">+ New List</button>
         </div>
 
         <div class="tasks-list">
             <h1 class="mat-display-1 title-caps primary">Tasks to complete</h1>
 
-            <div class="task">
-                <p>Feed the cat</p>
-            </div>
+            
             <div class="task complete">
                 <p>Go for a haircut</p>
             </div>
-            <div class="task">
-                <p>Complete project report</p>
+            <div class="task" *ngFor="let task of tasks">
+                <p>{{task.title}}</p>
             </div>
 
-            <div class="fab">
-                +
+            <div class="fab" (click)="openDialog('task')">
+                <img src="../../../assets/plus-icon.svg" alt="plus">
             </div>
             
         </div>
     </div>
 </div>
-<app-dialog></app-dialog>
