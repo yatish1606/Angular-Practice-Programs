@@ -13,6 +13,10 @@ const Task = mongoose.model(
         _listID: {
             type: mongoose.Types.ObjectId,
             required: true
+        },
+        completed: {
+            type: Boolean,
+            default: false
         }
     })
 )

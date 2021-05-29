@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { List, Task } from 'src/app/models/index.model';
 import { TaskService } from 'src/app/task.service';
 
 @Component({
@@ -10,10 +11,10 @@ import { TaskService } from 'src/app/task.service';
 })
 export class TaskViewComponent implements OnInit {
 
-  public listTitle = ''
-  public taskTitle = ''
-  public lists: any[]
-  public tasks: any[]
+  public title ?: string = ''
+  public lists : Array<List>[]
+  public tasks : Array<Task>[]
+  public currentListID : string | null = null
 
   constructor(private taskService : TaskService, private dialog: MatDialog, private router : ActivatedRoute, private navigation : Router) { }
 
@@ -21,19 +22,33 @@ export class TaskViewComponent implements OnInit {
     
     this.router.params.subscribe(
       (params : Params) => {
+        this.currentListID = params.listID
         this.taskService.getTasks(params.listID).subscribe((taskArray : any[]) => this.tasks = taskArray)
       }
     )
 
-    this.taskService.getLists().subscribe((listArray : any[]) => this.lists = listArray)
+    this.taskService.getLists().subscribe((listArray : Array<List>[]) => this.lists = listArray)
   }
 
-  public createNewList = (title: string) => {
+
+  // create a new list and navigate to it
+  public createNewList = (title: string) : void => {
     if(!title.length) return
-    
+
     this.taskService
     .createList(title)
-    .subscribe((response : any) => console.log(response))
+    .subscribe((response : List) => this.navigation.navigate(['/lists', response._id]))
+  }
+
+
+  // create a new task
+  public createNewTask = (title: string, _listID: string = this.currentListID) : void => {
+    console.log('creating a new task with listid', _listID)
+    if(!title.length) return
+
+    this.taskService
+    .createTask(title, _listID)
+    .subscribe((response : Task) => console.log('created a new task with credentials as ', response))
   }
 
 
@@ -42,12 +57,10 @@ export class TaskViewComponent implements OnInit {
 
     interface dataType {
       type: string, 
-      listTitle ?: string, taskTitle ?: string
+      title: string
     }
     
-    const data : dataType = { type }
-
-    type === 'list' ? data.listTitle = this.listTitle : data.taskTitle = this.taskTitle
+    const data : dataType = { type, title: this.title }
 
     const dialogRef = this.dialog.open(
       DialogComponent, 
@@ -58,10 +71,20 @@ export class TaskViewComponent implements OnInit {
     )
 
     dialogRef.afterClosed().subscribe(result => {
-
+      console.log('resilt is ', result)
       if(result.type === 'list')
-        this.createNewList(result.listTitle)
+        this.createNewList(result.title)
+      else this.createNewTask(result.title)
+
+      //window.location.reload()
     })
+  }
+
+
+  // mark task as completed 
+  public onTaskClick = (task : Task) : void => {
+
+    this.taskService.markAsComplete(task).subscribe((response: Task) => console.log('marked task as complete', task))
   }
 
 }
@@ -76,7 +99,7 @@ export class DialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {listTitle: string, type?: string, taskTitle: string}) {}
+    @Inject(MAT_DIALOG_DATA) public data: {title: string, type?: string}) {}
 
   onNoClick(): void {
     this.dialogRef.close()
