@@ -8,7 +8,7 @@ mongoose.connect(
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        useFindAndModify: true
+        useFindAndModify: false
     }
 )
 .then(() => console.log(chalk.bgGreenBright.black('Connected to database')))

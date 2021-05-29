@@ -35,6 +35,12 @@ html {
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+label {
+    font-size: 16.5px;
+    color: $tan;
+    letter-spacing: 0.6px;
+}
+
 .primary {
     color: $primary;
 }
@@ -141,8 +147,21 @@ input {
     &:focus {
         border-color: $green;
     }
+
+    &::placeholder {
+        color: $grey;
+        font-size: 17px;
+    }
 }
 
 .mat-dialog-container {
     border-radius: 5px;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.margin-10 {
+    margin: 10px 0;
 }

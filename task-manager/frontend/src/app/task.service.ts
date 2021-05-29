@@ -35,7 +35,7 @@ export class TaskService {
     return this.webRequestService.patch(
       `lists/${task._listID}/tasks/${task._id}`,
       {
-        completed: true
+        completed: !task.completed
       }
     )
   }

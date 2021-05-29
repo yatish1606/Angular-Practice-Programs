@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
+import { Task } from './models/index.model'
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class WebRequestService {
   public patch = (URI: string, payload: Object) => {
     return this.httpClient.patch(
       `${this.BASE_URL}/${URI}`,
-      payload
+      payload,
     )
   }
 

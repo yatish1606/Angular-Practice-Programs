@@ -20,7 +20,7 @@
             <div class="task complete">
                 <p>Go for a haircut</p>
             </div>
-            <div class="task" *ngFor="let task of tasks" (click)="onTaskClick(task)">
+            <div class="task" *ngFor="let task of tasks" (click)="onTaskClick(task)" [ngClass]="{'complete': task.completed}">
                 <p>{{task.title}}</p>
             </div>
 

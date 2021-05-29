@@ -1,0 +1,35 @@
+<div class="centered-content">
+    <div class="task-container">
+        <div class="half login-left">
+
+            <h1 class="mat-display-1 title-caps primary"></h1>
+
+            <div class="list-menu">
+                
+            </div>
+
+            
+        </div>
+
+        <div class="half login-right">
+            
+            <h1 class="mat-display-1 title-caps primary">Login to {{appName}}</h1>
+
+            <form>
+
+                <label>Email ID</label>
+                <input type="text" [(ngModel)]="username">
+                <br>
+
+                <label>Password</label>
+                <input type="password" [(ngModel)]="password">
+
+                <button type="submit" class="primary-button fullWidth margin-10">
+                    Login
+                </button>
+            </form>
+            
+            
+        </div>
+    </div>
+</div>

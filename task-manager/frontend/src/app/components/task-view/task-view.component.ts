@@ -23,11 +23,15 @@ export class TaskViewComponent implements OnInit {
     this.router.params.subscribe(
       (params : Params) => {
         this.currentListID = params.listID
-        this.taskService.getTasks(params.listID).subscribe((taskArray : any[]) => this.tasks = taskArray)
+        this.taskService
+        .getTasks(params.listID)
+        .subscribe((taskArray : any[]) => this.tasks = taskArray)
       }
     )
 
-    this.taskService.getLists().subscribe((listArray : Array<List>[]) => this.lists = listArray)
+    this.taskService
+    .getLists()
+    .subscribe((listArray : Array<List>[]) => this.lists = listArray)
   }
 
 
@@ -84,7 +88,12 @@ export class TaskViewComponent implements OnInit {
   // mark task as completed 
   public onTaskClick = (task : Task) : void => {
 
-    this.taskService.markAsComplete(task).subscribe((response: Task) => console.log('marked task as complete', task))
+    this.taskService
+    .markAsComplete(task)
+    .subscribe(() => {
+      console.log('task completed')
+      task.completed = !task.completed
+    })
   }
 
 }

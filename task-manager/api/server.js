@@ -5,14 +5,16 @@ const { List } = require('./db/models/List.model')
 const PORT = process.env.PORT || 3000
 const { mongoose } = require('./db/mongoose')
 const { Task } = require('./db/models/Task.model')
+const cors = require('cors')
 app.use(bodyParser.json())
 
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*")
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE')
+    res.header("Access-Control-Allow-Origin", "http://localhost:4200")
+    res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE")
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
     next()
 })
+app.use(cors())
 
 // Get requests
 app.get('/lists', (req, res) => { 
@@ -77,6 +79,7 @@ app.patch('/lists/:id', (req, res) => {
 })
 
 app.patch('/lists/:listID/tasks/:taskID', (req, res) => {
+    console.log(req.params)
     const { listID, taskID } = req.params
     Task.findOneAndUpdate(
         {
@@ -87,7 +90,7 @@ app.patch('/lists/:listID/tasks/:taskID', (req, res) => {
             $set: req.body   
         }
     )
-    .then(() => res.sendStatus(200))
+    .then((patchedTask) => res.status(200).send(patchedTask))
     .catch(e => res.status(404).send(e))
 })
 
