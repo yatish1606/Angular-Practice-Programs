@@ -17,6 +17,35 @@ app.use((req, res, next) => {
 })
 app.use(cors())
 
+let verifySession = (req, res, next) => {
+    let refreshToken = req.header('x-refresh-token')
+    let _id = req.header('_id')
+
+    User.findByIDandToken(_id, refreshToken).then(user => {
+        if(!user) {
+            return Promise.reject('User with given id and token not found')
+        }
+
+        req.user_id = user._id
+        req.userObject = user
+        req.refreshToken = refreshToken
+
+        let isValidSession = false
+
+        user.sessions.forEach(session => {
+            if(session.token === refreshToken) {
+                if(User.hasRefreshTokenExpired(session.expiresAt) === false) {
+                    isValidSession = true
+                }
+            }
+        })
+
+        if(isValidSession) {
+            next()
+        } else return Promise.reject('Refresh token has expired')
+    }).catch(e => res.status(401).send(e))
+}
+
 // Get requests
 app.get('/lists', (req, res) => { 
     List
@@ -43,6 +72,13 @@ app.get('/lists/:listID/tasks/:taskID', (req, res) => {
     })
     .then(tasks => res.send(tasks))
     .catch(e => res.status(404).send(e))
+})
+
+app.get('/users/me/access-token', verifySession, (req, res) => {
+    req.userObject.generateAccessAuthToken().then(accessToken => {
+        res.header('x-access-token', accessToken).send({accessToken})
+    })
+    .catch(e => res.status(400).send(e))
 })
 
 
@@ -127,7 +163,6 @@ app.post('/users', (req, res) => {
     }).then((refreshToken) => {
         // Session created successfully - refreshToken returned.
         // now we geneate an access auth token for the user
-
         return newUser.generateAccessAuthToken().then((accessToken) => {
             // access auth token generated successfully, now we return an object containing the auth tokens
             return { accessToken, refreshToken }
@@ -144,19 +179,42 @@ app.post('/users', (req, res) => {
 })
 
 
+// app.post('/users/login', (req, res) => {
+//     const { email, password } = req.body
+//     User.findByCredentials(email, password)
+//     .then(user => user.createSession())
+//     .then(refreshToken => user.generateAccessAuthToken().then(accessToken => {accessToken, refreshToken}))
+//     .then(authTokens => {
+//         res
+//         .header('x-refresh-token', authTokens.refreshToken)
+//         .header('x-access-token', authTokens.accessToken)
+//         .send(newUser)
+//     })
+//     .catch(e => res.status(400).send(e))
+// })
+
 app.post('/users/login', (req, res) => {
-    const { email, password } = req.body
-    User.findByCredentials(email, password)
-    .then(user => user.createSession())
-    .then(refreshToken => user.generateAccessAuthToken().then(accessToken => {accessToken, refreshToken}))
-    .then(authTokens => {
-        res
-        .header('x-refresh-token', authTokens.refreshToken)
-        .header('x-access-token', authTokens.accessToken)
-        .send(newUser)
+    let { email, password } = req.body
+    User.findByCredentials(email, password).then((user) => {
+        return user.createSession().then((refreshToken) => {
+            // Session created successfully - refreshToken returned.
+            // now we geneate an access auth token for the user
+            return user.generateAccessAuthToken().then((accessToken) => {
+                // access auth token generated successfully, now we return an object containing the auth tokens
+                return { accessToken, refreshToken }
+            });
+        }).then((authTokens) => {
+            // Now we construct and send the response to the user with their auth tokens in the header and the user object in the body
+            res
+                .header('x-refresh-token', authTokens.refreshToken)
+                .header('x-access-token', authTokens.accessToken)
+                .send(user)
+        })
+    }).catch((e) => {
+        res.status(400).send(e);
     })
-    .catch(e => res.status(400).send(e))
 })
+
 
 
 app.listen(
