@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 3000
 const { mongoose } = require('./db/mongoose')
 const { Task } = require('./db/models/Task.model')
 const cors = require('cors')
+const { User } = require('./db/models/User.model')
 app.use(bodyParser.json())
 
 app.use((req, res, next) => {
@@ -113,6 +114,47 @@ app.delete('/lists/:listID/tasks/:taskID', (req, res) => {
         }
     )
     .then(deletedDoc => res.send(deletedDoc))
+    .catch(e => res.status(400).send(e))
+})
+
+
+app.post('/users', (req, res) => {
+    const newUser = new User(req.body)
+    newUser
+    .save()
+    .then(() => {
+        return newUser.createSession()
+    }).then((refreshToken) => {
+        // Session created successfully - refreshToken returned.
+        // now we geneate an access auth token for the user
+
+        return newUser.generateAccessAuthToken().then((accessToken) => {
+            // access auth token generated successfully, now we return an object containing the auth tokens
+            return { accessToken, refreshToken }
+        })
+    }).then((authTokens) => {
+        // Now we construct and send the response to the user with their auth tokens in the header and the user object in the body
+        res
+            .header('x-refresh-token', authTokens.refreshToken)
+            .header('x-access-token', authTokens.accessToken)
+            .send(newUser)
+    }).catch((e) => {
+        res.status(400).send(e)
+    })
+})
+
+
+app.post('/users/login', (req, res) => {
+    const { email, password } = req.body
+    User.findByCredentials(email, password)
+    .then(user => user.createSession())
+    .then(refreshToken => user.generateAccessAuthToken().then(accessToken => {accessToken, refreshToken}))
+    .then(authTokens => {
+        res
+        .header('x-refresh-token', authTokens.refreshToken)
+        .header('x-access-token', authTokens.accessToken)
+        .send(newUser)
+    })
     .catch(e => res.status(400).send(e))
 })
 
