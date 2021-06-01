@@ -8,12 +8,12 @@ import { QuestionBase } from '../question-base';
   templateUrl: './dynamic-form-question.component.html'
 })
 export class DynamicFormQuestionComponent {
-  @Input() question!: QuestionBase<string>;
+  @Input() question!: QuestionBase<Array<string>>;
   @Input() form!: FormGroup;
   get isValid() { return this.form.controls[this.question.key].valid; }
 
   ngOnInit () {
-    console.log(this.question)
+    // console.log(this.question)
   }
 
   public checkBoxChange (event : Event, opt: any ) : void {

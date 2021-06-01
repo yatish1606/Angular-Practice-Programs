@@ -12,7 +12,7 @@ export class QuestionService {
 
   public getQuestions() {
 
-    const questions: QuestionBase<string>[] = [
+    const questions: QuestionBase<Array<string>>[] = [
 
       new DropdownQuestion({
         key: 'brave',
@@ -29,16 +29,18 @@ export class QuestionService {
       new TextboxQuestion({
         key: 'firstName',
         label: 'First name',
-        value: 'Bombasto',
+        value: ['Bombasto'],
         required: true,
-        order: 1
+        order: 1,
+        type: 'text'
       }),
 
       new TextboxQuestion({
         key: 'emailAddress',
         label: 'Email',
         type: 'email',
-        order: 2
+        order: 2,
+        value: ['']
       }),
 
       new CheckBoxQuestion({

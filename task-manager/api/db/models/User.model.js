@@ -101,7 +101,13 @@ UserSchema.statics.findByCredentials = function (email, password) {
 
 UserSchema.statics.hasRefreshTokenExpired = expiresAt => {
     const secondsSinceEpoch = Date.now() / 1000
-    return expiresAt < secondsSinceEpoch
+    if (expiresAt > secondsSinceEpoch) {
+        // hasn't expired
+        return false;
+    } else {
+        // has expired
+        return true;
+    }
 }
 
 UserSchema.pre('save', function (next) {
@@ -129,9 +135,9 @@ let saveSessionToDatabase = function (user, refreshToken) {
 }
 
 let generateRefreshAuthTokenExpireTime = function () {
-    let daysToExpire = '10'
-    let secondsToExpire  = ((daysToExpire * 24) * 60) * 60
-    return ((Date.now() / 1000) + secondsToExpire)
+    let daysUntilExpire = "10"
+    let secondsUntilExpire = ((daysUntilExpire * 24) * 60) * 60
+    return ((Date.now() / 1000) + secondsUntilExpire)
 }
 
 const User = mongoose.model(
