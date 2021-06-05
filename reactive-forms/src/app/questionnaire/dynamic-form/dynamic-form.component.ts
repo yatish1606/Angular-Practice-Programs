@@ -32,7 +32,7 @@ export class DynamicFormComponent implements OnInit {
   public changeToGroup () {
 
     this.questions.forEach(question => {
-          console.log('hi')
+          
           let newQues : any
           
           switch(question.answerType) {
@@ -97,20 +97,20 @@ export class DynamicFormComponent implements OnInit {
               })
               break
           }
-          console.log(this.typeQuestions)
+          
           this.typeQuestions.push({...newQues})
     
     })
 
     let group: any = {}
     this.typeQuestions.forEach(question => {
-      console.log(question)
+      
       group[parseInt(question.key.toString())] = question.required ? new FormControl(question.value || '', Validators.required)
                                                          : new FormControl(question.value || '')
     })
-    console.log(group)
+    
     this.form = new FormGroup(group)
-    console.log(this.form)
+    
   }
 
   public getErrorMessage() {

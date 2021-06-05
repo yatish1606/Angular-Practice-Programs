@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
-import { QuestionService } from './question.service';
-import { QuestionBase } from './question-base';
+import { QuestionService } from './questionnaire/question.service';
+import { QuestionBase } from './questionnaire/question-base';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   template: `
     <div class="mat-typography">
       <h1>Dynamic Questionnaire</h1>
-      <app-dynamic-form [questions]="questions$"></app-dynamic-form>
+      <app-dynamic-form></app-dynamic-form>
     </div>
   `,
   providers:  [QuestionService]
