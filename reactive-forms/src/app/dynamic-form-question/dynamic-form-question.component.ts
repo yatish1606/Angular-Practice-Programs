@@ -13,7 +13,7 @@ export class DynamicFormQuestionComponent {
   get isValid() { return this.form.controls[this.question.key].valid; }
 
   ngOnInit () {
-    // console.log(this.question)
+    console.log(this.question)
   }
 
   public checkBoxChange (event : Event, opt: any ) : void {
@@ -22,6 +22,7 @@ export class DynamicFormQuestionComponent {
     this.form.patchValue({
       Languages: input.checked ?  old.concat(' ').concat(opt.value) : old.replace(opt.value, '')
     })
+    console.log(this.form)
   }
 
 }

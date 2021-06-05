@@ -7,17 +7,18 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-root',
   template: `
-    <div>
-      <h2>Job Application for Heroes</h2>
-      <app-dynamic-form [questions]="questions$ | async"></app-dynamic-form>
+    <div class="mat-typography">
+      <h1>Dynamic Questionnaire</h1>
+      <app-dynamic-form [questions]="questions$"></app-dynamic-form>
     </div>
   `,
   providers:  [QuestionService]
 })
 export class AppComponent {
-  questions$: Observable<QuestionBase<any>[]>;
+  questions$: any;
 
   constructor(service: QuestionService) {
-    this.questions$ = service.getQuestions();
+    this.questions$ = service.getQuestions()
+    console.log(this.questions$, this.questions$ instanceof Array, this.questions$.length)
   }
 }

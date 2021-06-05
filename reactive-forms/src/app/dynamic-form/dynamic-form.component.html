@@ -1,13 +1,73 @@
-<div>
-    <form (ngSubmit)="onSubmit()" [formGroup]="form">
+<div *ngIf="form">
+    <form (submit)="onSubmit($event)" [formGroup]="form">
   
-      <div *ngFor="let question of questions" class="form-row">
-        <app-question [question]="question" [form]="form"></app-question>
+      <div *ngFor="let question of typeQuestions" class="form-row">
+    
+        <mat-label style="margin-bottom: 15px;">{{question.label}} <span *ngIf="question.required" style="color: red;">*</span></mat-label>
+                    
+          <div [ngSwitch]="question.controlType">
+                  
+            <!-- Text input -->
+            <mat-form-field appearance="outline" *ngSwitchCase="'textbox'">
+              
+              <input matInput [formControlName]="question.key" placeholder="Type here..."
+                   [id]="question.key" type="text">
+              <mat-error *ngIf="form.controls[question.key.toString()].hasError('required')">
+                {{getErrorMessage()}}
+              </mat-error>
+            </mat-form-field>
+
+
+            <!-- Select with single option only -->
+            <mat-form-field appearance="outline"  *ngSwitchCase="'dropdown'" >
+              <mat-select [formControlName]="question.key" placeholder="Select..">
+                <mat-option *ngFor="let opt of question.options" [value]="opt.value">
+                  {{opt.value}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="form.controls[question.key.toString()].hasError('required')">
+                {{getErrorMessage()}}
+              </mat-error>
+            </mat-form-field>
+
+
+            <!-- Dropdown with multiple options select -->
+            <mat-form-field appearance="outline" *ngSwitchCase="'checkbox'"> 
+              <mat-select [formControlName]="question.key" multiple  placeholder="Select..">
+                <mat-select-trigger>
+                  {{form.controls[question.key.toString()].value ? form.controls[question.key.toString()].value[0].value : ''}}
+                  <span class="example-additional-selection">
+                    (+{{form.controls[question.key].value.length - 1}} {{form.controls[question.key].value?.length === 2 ? 'other' : 'others'}})
+                  </span>
+                </mat-select-trigger>
+                <mat-option *ngFor="let opt of question.options" [value]="{key: opt.key, value: opt.value}">{{opt.value}}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="form.controls[question.key.toString()].hasError('required')">
+                {{getErrorMessage()}}
+              </mat-error>
+            </mat-form-field>
+
+            
+            <!-- Radio button single option -->
+            <div class="row" [formGroup]="form" *ngSwitchCase="'radio'">
+              <mat-radio-group [formControlName]="question.key">
+                <mat-radio-button *ngFor="let opt of question.options" [value]="opt.key">
+                  {{opt.value}}
+                </mat-radio-button>
+              </mat-radio-group>
+              <mat-error *ngIf="form.controls[question.key.toString()].hasError('required')">
+                {{getErrorMessage()}}
+              </mat-error>
+            </div>
+          
+                  
+          </div>
       </div>
   
       <div class="form-row">
         <button type="submit" [disabled]="!form.valid">Save</button>
       </div>
+
     </form>
   
     <div *ngIf="payLoad" class="form-row">

@@ -1,6 +1,6 @@
 export class QuestionBase<T> {
   value: T
-  key: string
+  key: string | number
   label: string
   required: boolean
   order: number
@@ -10,7 +10,7 @@ export class QuestionBase<T> {
 
   constructor(options: {
       value?: T
-      key?: string
+      key?: string | number
       label?: string
       required?: boolean
       order?: number

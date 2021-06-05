@@ -1,52 +1,127 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { QuestionBase } from '../question-base';
-import { QuestionControlService } from '../question-control.service';
+import { CheckBoxQuestion } from '../question-checkbox';
+import { DropdownQuestion } from '../question-dropdown';
+import { RadioQuestion } from '../question-radio';
+import { TextboxQuestion } from '../question-textbox';
+import { QuestionService } from '../question.service';
 
 
 @Component({
   selector: 'app-dynamic-form',
   templateUrl: './dynamic-form.component.html',
-  providers: [ QuestionControlService ]
+  providers: [ QuestionService ]
 })
 export class DynamicFormComponent implements OnInit {
 
-  @Input() questions: QuestionBase<Array<string>>[] | null = [];
-  form!: FormGroup;
-  payLoad = '';
+  public questions 
+  public typeQuestions : QuestionBase<string>[] = []
+  public form!: FormGroup | null;
+  public payLoad = '';
 
-  constructor(private qcs: QuestionControlService) {}
-
-  ngOnInit() {
-    this.form = this.qcs.toFormGroup(this.questions as QuestionBase<Array<string>>[]);
+  constructor(ser: QuestionService) {
+    ser.getQuestions().subscribe(r =>{
+      this.questions = r
+      this.changeToGroup()
+    })
   }
 
-  onSubmit() {
-    const formValues = this.form.getRawValue()
-    const newPayload = {}
-    let index = 0
-    
-    for ( const property in formValues) {
-      
-      const formProperty = Array.isArray(formValues[property]) ? formValues[property][0] : formValues[property]
-      
-      const valueArray = formProperty.trim().split(' ')
-      const multiChoiceSelection : Array<{key:string, value: string}> = []
-      
-      if(valueArray.length > 1) {
-        
-        valueArray.forEach(selectedOption => {
-          this.questions[index].options.forEach(({key, value}) => {
-            if(selectedOption === value) 
-              multiChoiceSelection.push({key, value})
-          })
-        })
-      }
+  ngOnInit() {}
 
-      newPayload[property] = valueArray.length > 1 ? multiChoiceSelection : valueArray[0]
-      index++
-    }
+  public changeToGroup () {
+
+    this.questions.forEach(question => {
+          console.log('hi')
+          let newQues : any
+          
+          switch(question.answerType) {
+            
+            case 'text' :
+              
+              newQues = new TextboxQuestion({
+                key: question.id.toString(),
+                label: question.questionDescription,
+                value: '',
+                required: question.isMandatory,
+                order: question.orderNumber,
+                type: question.answerType
+              })
+              break
+            
+            case 'dropdown' : 
+              
+              const newOptionsDropdown = question.optionsDescription.map((desc, index) => {
+                return {key: index.toString(), value: desc}
+              })
     
-    this.payLoad = Object(newPayload)
+              newQues = new DropdownQuestion({
+                key: question.id.toString(),
+                label: question.questionDescription,
+                options: newOptionsDropdown,
+                required: question.isMandatory,
+                order: question.orderNumber,
+                type: question.answerType
+              })
+              break
+    
+            case 'checkbox' : 
+    
+              const newOptionsCheckbox = question.optionsDescription.map((desc, index) => {
+                return {key: index.toString(), value: desc}
+              })
+    
+              newQues = new CheckBoxQuestion({
+                key: question.id.toString(),
+                label: question.questionDescription,
+                options: newOptionsCheckbox,
+                required: question.isMandatory,
+                order: question.orderNumber,
+                type: question.answerType
+              })
+              break
+    
+            case 'radio' : 
+    
+              const newOptionsRadio = question.optionsDescription.map((desc, index) => {
+                return {key: index.toString(), value: desc}
+              })
+    
+              newQues = new RadioQuestion({
+                key: question.id.toString(),
+                label: question.questionDescription,
+                options: newOptionsRadio,
+                required: question.isMandatory,
+                order: question.orderNumber,
+                type: question.answerType
+              })
+              break
+          }
+          console.log(this.typeQuestions)
+          this.typeQuestions.push({...newQues})
+    
+    })
+
+    let group: any = {}
+    this.typeQuestions.forEach(question => {
+      console.log(question)
+      group[parseInt(question.key.toString())] = question.required ? new FormControl(question.value || '', Validators.required)
+                                                         : new FormControl(question.value || '')
+    })
+    console.log(group)
+    this.form = new FormGroup(group)
+    console.log(this.form)
+  }
+
+  public getErrorMessage() {
+    return 'This field is required'
+  }
+
+  onSubmit(submitEvent : Event) {
+    
+    submitEvent.preventDefault()
+    console.log(this.form)
+    this.payLoad = this.form.value
+    
   }
 }
